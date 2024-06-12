@@ -56,11 +56,13 @@ def get_grass_count(name, start_day, end_day, token):
         if 'data' in data and data['data'].get('user') and data['data']['user'].get('contributionsCollection'):
             weeks = data['data']['user']['contributionsCollection']['contributionCalendar']['weeks']
             contribution_days_list = []
+            contributionCounter = [0]
             for week in weeks:
                 for day in week['contributionDays']:
                     if day['contributionCount'] > 0 and day['date'] in day_range:
+                        contributionCounter[0] += day["contributionCount"]
                         contribution_days_list.append(day['date'])
-            return len(contribution_days_list)
+            return [len(contribution_days_list), contributionCounter]
         else:
             return None
     else:
@@ -77,15 +79,18 @@ def form_post():
     token = request.form['token']
     start_day = request.form['start_day']
     end_day = request.form['end_day']
-    dict = {}
+    contribution_dict = {}
+    
     for name in name_list:
-        count = get_grass_count(name, start_day, end_day, token)
-        dict[name] = count
-    result = f"<div style='width: 100%; margin:0; padding:0; height: 100vh; display: grid; place-items:center; font-family: Arial, sans-serif;'><h1>{start_day} ~ {end_day}</h1><div style=' height:80%; overflow:scroll; border-radius:10px;'><table style=' border-collapse: collapse; background: #cccccc; '>"
-    for key, value in dict.items():
-        result += f"<tr><td style='box-sizing:border-box; border-bottom: 1px solid rgb(80, 80, 80); padding: 14px;'>{key}</td><td style='box-sizing:border-box; border-bottom: 1px solid rgb(80, 80, 80); padding: 14px;'><strong>{value}</strong></td></tr>"
-    result += "</table></div></div>"
-    return result
+        result = get_grass_count(name, start_day, end_day, token)
+        if result:
+            grass_count, contribution_count = result
+        else:
+            grass_count, contribution_count = "Error", "Eorror"
+        contribution_dict[name] = {'grass': grass_count, 'contributions': contribution_count}
+    
+    return render_template('result.html', start_day=start_day, end_day=end_day, contributions=contribution_dict)
+
 
 
 if __name__ == '__main__':

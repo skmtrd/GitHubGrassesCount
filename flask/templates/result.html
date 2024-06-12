@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contribution Results</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+      referrerpolicy="no-referrer"
+    />
+    <style>
+      body {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        background-color: #f0f2f5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        flex-flow: column;
+      }
+      .container {
+        background-color: #ffffff;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        width: 100%;
+        max-width: 800px;
+        text-align: center;
+        box-sizing: border-box;
+        transition: transform 0.3s;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+      h1 {
+        margin-bottom: 20px;
+        color: #333;
+        font-size: 26px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #f9f9f9;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      th,
+      td {
+        padding: 14px;
+        border-bottom: 1px solid #ddd;
+      }
+      th {
+        background-color: #007bff;
+        color: white;
+      }
+      td {
+        background-color: #ffffff;
+      }
+      tr:hover {
+        background-color: #f1f1f1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Contributions from {{ start_day }} to {{ end_day }}</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Grass Count</th>
+            <th>Contributions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for name, data in contributions.items() %}
+          <tr>
+            <td>{{ name }}</td>
+            <td>{{ data.grass }}</td>
+            <td>{{ data.contributions }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

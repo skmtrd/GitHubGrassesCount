@@ -1,65 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GitHubGrassCounter</title>
-  </head>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-flow: column;
-      width: 100vw;
-      height: 100vh;
-      font-family: Arial, sans-serif;
-    }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Contributions Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <style>
+        body {
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .icon {
+            font-size: 40px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        h1 {
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 22px;
+        }
+        p {
+            margin-bottom: 15px;
+            color: #555;
+            font-size: 14px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="date"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input[type="date"]:focus,
+        input[type="password"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 50%;
+            transition: background-color 0.1s, transform 0.3s;
+            box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
 
-    .form {
-      background: #cccccc;
-      padding: 20px;
-      border-radius: 10px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-    }
+        button:active {
+            transform: scale(0.95);
+        }
+        .modal-button {
+            background-color: #777777;
+            color: white;
+            margin-top: 18px;
+        }
+        .modal-button:hover {
+            background-color: #555555;
+        }
+        .explain {
+            margin-top: 15px;
+            font-size: 12px;
+            text-align: center;
+            color: #555;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: modalOpen 0.4s;
+        }
+        @keyframes modalOpen {
+            from {transform: translateY(-100px); opacity: 0;}
+            to {transform: translateY(0); opacity: 1;}
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <i class="fab fa-github icon"></i>
+        <h1>GitHub Contributions Tracker</h1>
+        <p>To use this tool, you need a GitHub API key. You can obtain one <a href="https://github.com/settings/tokens" target="_blank">here</a>.</p>
+        <form action="/form-post" method="POST" id="contribution-form">
+            <label for="start-date">Start Date</label>
+            <input type="date" id="start-date" name="start_day" required />
 
-    .form div {
-      display: grid;
-      place-items: center;
-    }
+            <label for="end-date">End Date</label>
+            <input type="date" id="end-date" name="end_day" required />
 
-    .explain {
-      margin-top: 20px;
-      font-size: 12px;
-      text-align: center;
-    }
-  </style>
-  <body>
-    <form action="/form-post" method="POST">
-      <div class="form">
-        <div>
-          <p>GitHub APIキー</p>
-          <input name="token" />
-        </div>
-        <div>
-          <p>開始日</p>
-          <input name="start_day" type="date" />
-          <p>終了日</p>
-          <input name="end_day" type="date" />
-        </div>
-        <button type="submit">送信</button>
-      </div>
-    </form>
-    <div class="explain">
-      <p>※Noneと出力されるユーザーはユーザー名が間違っています</p>
-      <p>※すべてのユーザーにNoneが出力された場合、APIキーが間違っています</p>
+            <label for="api-key">API Key</label>
+            <input type="password" id="api-key" name="token" required />
+
+            <button type="submit" style="margin-top: 5px;">Get Contributions</button>
+        </form>
+        <button onclick="openModal()" class="modal-button">About This Tool</button>
     </div>
-  </body>
+    <div class="explain">
+        <p>※If "None" is output, the username is incorrect.</p>
+        <p>※If "None" is output for all users, the API key is incorrect.</p>
+    </div>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>About GitHub Contributions Tracker</h2>
+            <p>
+                GitHub Contributions Tracker is a tool designed to help you track the number of contributions made by GitHub users over a specified period. By providing a start date, end date, and your GitHub API key, you can easily retrieve and display the contributions for the selected users.
+            </p>
+            <p>
+                <strong>Steps to use:</strong>
+                <ol>
+                    <li>Enter the start date and end date for the period you want to track.</li>
+                    <li>Provide your GitHub API key. You can obtain one from your <a href="https://github.com/settings/tokens" target="_blank">GitHub settings</a>.</li>
+                    <li>Click "Get Contributions" to retrieve the data.</li>
+                </ol>
+            </p>
+            <p>
+                This tool is particularly useful for project managers, team leads, and individual developers who want to monitor their contribution activity or that of their team. It provides a quick and efficient way to gather contribution data without having to navigate through GitHub's interface.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function openModal() {
+            document.getElementById("myModal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("myModal").style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById("myModal")) {
+                document.getElementById("myModal").style.display = "none";
+            }
+        }
+    </script>
+</body>
 </html>
