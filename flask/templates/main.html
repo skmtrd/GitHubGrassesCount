@@ -13,9 +13,11 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-flow: column;
       background-color: rgb(241, 241, 241);
       width: 100vw;
       height: 100vh;
+      font-family: Arial, sans-serif;
     }
 
     .form {
@@ -32,6 +34,12 @@
     .form div {
       display: grid;
       place-items: center;
+    }
+
+    .explain {
+      margin-top: 20px;
+      font-size: 12px;
+      text-align: center;
     }
   </style>
   <body>
@@ -50,5 +58,9 @@
         <button type="submit">送信</button>
       </div>
     </form>
+    <div class="explain">
+      <p>※Noneと出力されるユーザーはユーザー名が間違っています</p>
+      <p>※すべてのユーザーにNoneが出力された場合、APIキーが間違っています</p>
+    </div>
   </body>
 </html>
