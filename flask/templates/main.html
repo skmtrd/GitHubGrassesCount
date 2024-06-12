@@ -3,15 +3,52 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>sda</title>
+    <title>GitHubGrassCounter</title>
   </head>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgb(241, 241, 241);
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .form {
+      background: #cccccc;
+      padding: 20px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .form div {
+      display: grid;
+      place-items: center;
+    }
+  </style>
   <body>
     <form action="/form-post" method="POST">
-      <p>開始日</p>
-      <input name="start_day" type="date"></input>
-      <p>終了日</p>
-      <input name="end_day" type="date"></input>
-      <button type="submit">送信</button>
+      <div class="form">
+        <div>
+          <p>GitHub APIキー</p>
+          <input name="token" />
+        </div>
+        <div>
+          <p>開始日</p>
+          <input name="start_day" type="date" />
+          <p>終了日</p>
+          <input name="end_day" type="date" />
+        </div>
+        <button type="submit">送信</button>
+      </div>
     </form>
   </body>
 </html>

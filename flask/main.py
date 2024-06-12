@@ -23,11 +23,9 @@ def generate_date_range(start_date, end_date):
         return "Invalid date format. Please provide dates in the format 'YYYY-MM-DD'."
     
 
-def get_grass_count(name, start_day, end_day):
-    GITHUB_TOKEN = "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"
-    print("get_grass_count")
+def get_grass_count(name, start_day, end_day, token):
+    GITHUB_TOKEN = str(token)
     day_range = generate_date_range(start_day, end_day)
-    print(day_range)
     query = """
     query($name: String!) {
       user(login: $name) {
@@ -75,16 +73,19 @@ def main():
 
 @app.route('/form-post', methods=['POST'])
 def form_post():
+    token = request.form['token']
     start_day = request.form['start_day']
     end_day = request.form['end_day']
     dict = {}
-    count = get_grass_count("skmtrd", start_day, end_day)
     for name in name_list:
-        count = get_grass_count(name, start_day, end_day)
+        count = get_grass_count(name, start_day, end_day, token)
         dict[name] = count
     result = """"""
-    result += f"<h1>{start_day}~{end_day}</h1><br>"
+    result += f"<h3>{start_day}~{end_day}</h3><br>"
     for key, value in dict.items():
+        if value is None:
+            result = f"<h1><strong>GitHub APIキー が間違っている可能性があります</strong></h1>"
+            return result
         result += f"<p><strong>{key}: {value}</strong></p>"
     return result
 
