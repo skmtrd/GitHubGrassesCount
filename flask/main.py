@@ -81,7 +81,7 @@ def form_post():
     for name in name_list:
         count = get_grass_count(name, start_day, end_day, token)
         dict[name] = count
-    result = f"<div style='width: 100%; margin:0; padding:0; height: 100vh; display: grid; place-items:center; background-color: rgb(241, 241, 241); font-family: Arial, sans-serif;'><h1>{start_day} ~ {end_day}</h1><div style=' height:80%; overflow:scroll; border-radius:10px;'><table style=' border-collapse: collapse; background: #cccccc; '>"
+    result = f"<div style='width: 100%; margin:0; padding:0; height: 100vh; display: grid; place-items:center; font-family: Arial, sans-serif;'><h1>{start_day} ~ {end_day}</h1><div style=' height:80%; overflow:scroll; border-radius:10px;'><table style=' border-collapse: collapse; background: #cccccc; '>"
     for key, value in dict.items():
         result += f"<tr><td style='box-sizing:border-box; border-bottom: 1px solid rgb(80, 80, 80); padding: 14px;'>{key}</td><td style='box-sizing:border-box; border-bottom: 1px solid rgb(80, 80, 80); padding: 14px;'><strong>{value}</strong></td></tr>"
     result += "</table></div></div>"
